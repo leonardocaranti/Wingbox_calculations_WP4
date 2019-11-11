@@ -42,7 +42,21 @@ def MOI(span_position):
 
     return [I_x,I_y]
 
+# Local cross-sectional area
+def local_area(span_position):
+
+    # Calculate dimensions at given span
+    rear_spar_h = span_position*(rear_spar_h_root-rear_spar_h_tip)/b_2 + rear_spar_h_tip
+    front_spar_h = span_position*(front_spar_h_root-front_spar_h_tip)/b_2 + front_spar_h_tip
+    dist = span_position*(root_dist-tip_dist)/b_2 + tip_dist
+
+    area = (rear_spar_h+front_spar_h)/2*dist
+
+    return area
+
+
+
 print("Centroid location", centroid(15))
 print()
 print("Moments of inertia", MOI(15))
-
+print("Area", local_area(15))
