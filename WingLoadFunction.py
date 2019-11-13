@@ -33,6 +33,9 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
     rootForceWing = massWing*g/halfwingspan
     # slope = dz/dx note - sign because z axis is positive downwards
     slopeWing = -rootForceWing/halfwingspan
+    
+    xspan = []
+    wscaled = []
 
     def wingForce(b):
         """
@@ -92,6 +95,8 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
             totalForce += pointLoadWingTip
         elif xEngine1-dx/2 <= b <= xEngine1+dx/2 or xEngine2-dx/2 <= b <= xEngine2+dx:
             totalForce += massEngine*g
-
-        outar.append(b, totalForce)
-    return outar
+            
+        xspan.append(b)
+        wscaled.append(totalForce)
+        
+    return (xspan,wscaled)
