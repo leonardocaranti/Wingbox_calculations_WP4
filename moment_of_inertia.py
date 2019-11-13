@@ -12,14 +12,20 @@ rear_spar_h_root = 0.8606
 front_spar_h_root = 0.9386
 root_dist = 3.3
 
+# Calculate dimensions at given span
+def dimens(span_position):
+
+    rear_spar_h = span_position*(rear_spar_h_tip-rear_spar_h_root)/b_2 + rear_spar_h_root
+    front_spar_h = span_position*(front_spar_h_tip-front_spar_h_root)/b_2 + front_spar_h_root
+    dist = span_position*(tip_dist-root_dist)/b_2 + root_dist
+
+    return [rear_spar_h, front_spar_h, dist]
+
 
 # Centroid
 def centroid(span_position):
 
-    # Calculate dimensions at given span
-    rear_spar_h = span_position*(rear_spar_h_root-rear_spar_h_tip)/b_2 + rear_spar_h_tip
-    front_spar_h = span_position*(front_spar_h_root-front_spar_h_tip)/b_2 + front_spar_h_tip
-    dist = span_position*(root_dist-tip_dist)/b_2 + tip_dist
+    rear_spar_h, front_spar_h, dist = dimens(span_position)
 
     # Calculate centroid
     centr_y = (rear_spar_h*spar_thickness*dist + dist*spar_thickness*dist*0.5*2)/(rear_spar_h*spar_thickness + front_spar_h*spar_thickness + dist*spar_thickness*2)
@@ -31,10 +37,7 @@ def centroid(span_position):
 # Moment of inertia
 def MOI(span_position):
 
-    # Calculate dimensions at given span
-    rear_spar_h = span_position*(rear_spar_h_root-rear_spar_h_tip)/b_2 + rear_spar_h_tip
-    front_spar_h = span_position*(front_spar_h_root-front_spar_h_tip)/b_2 + front_spar_h_tip
-    dist = span_position*(root_dist-tip_dist)/b_2 + tip_dist
+    rear_spar_h, front_spar_h, dist = dimens(span_position)
 
     # Calcualte moment of inertia
     I_x = front_spar_h*spar_thickness*(centroid(span_position)[0])**2 + rear_spar_h*spar_thickness*(dist-centroid(span_position)[0])**2 + 2*dist*spar_thickness*(dist/2-centroid(span_position)[0])**2
@@ -45,10 +48,7 @@ def MOI(span_position):
 # Local cross-sectional area
 def local_area(span_position):
 
-    # Calculate dimensions at given span
-    rear_spar_h = span_position*(rear_spar_h_root-rear_spar_h_tip)/b_2 + rear_spar_h_tip
-    front_spar_h = span_position*(front_spar_h_root-front_spar_h_tip)/b_2 + front_spar_h_tip
-    dist = span_position*(root_dist-tip_dist)/b_2 + tip_dist
+    rear_spar_h, front_spar_h, dist = dimens(span_position)
 
     area = (rear_spar_h+front_spar_h)/2*dist
 
@@ -56,7 +56,7 @@ def local_area(span_position):
 
 
 
-print("Centroid location", centroid(15))
+print("Centroid location", centroid(27))
 print()
-print("Moments of inertia", MOI(15))
-print("Area", local_area(15))
+print("Moments of inertia", MOI(27))
+print("Area", local_area(27))
