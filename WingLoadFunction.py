@@ -5,7 +5,7 @@ Weight force diagram generator that includes the wing weight, wingtip weight, en
 import decimal
 import moment_of_inertia
 
-def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790/2, xEngine1 = 5,
+def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790, xEngine1 = 5,
              xEngine2 = 10, densityKerosine = 810, pointLoadWingTip = 3000):
 
     """
@@ -13,8 +13,8 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
     :param accuracy: Defines for how many points the force is calculated
     :param wingspan: The wingspan of the aircraft (NOT half wingspan)
     :param massEngine: The mass of the engine in kg
-    :param massWing: The mass of the wing in kg
-    :param massFuel: The mass of the fuel in kg
+    :param massWing: The mass of the wing in kg NOTE weight of the full wing
+    :param massFuel: The mass of the fuel in kg NOTE this fuel amount goes in both of the wings
     :param xEngine1: The spanwise location of the first engine
     :param xEngine2: The spanwise location of the second engine
     :param densityKerosine: The density of the fuel used (kerosine)
@@ -48,7 +48,7 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
 
     # Calculate the fuel tank end location assuming it starts at the root
     Volume = 0
-    RequiredVolume = (massFuel)/(densityKerosine)
+    RequiredVolume = (massFuel/2)/(densityKerosine)
 
     # Integrate untill the required fuel volume is reached
     for x in range(0, int(halfwingspan*10**decimalPlaces+dx*10**decimalPlaces), int(dx*10**decimalPlaces)):
@@ -60,13 +60,13 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
             xFuelTankEnd = b
             print("Fuel tank ends at a spanwise location of " + str(b) + " m")
             break
-        elif b <= int(halfwingspan*10**decimalPlaces):
-            print("Error integration for fuel volume failed")
+        elif b >= halfwingspan:
+            print("Error integration for fuel volume failed, the lenght is bigger then the halfspan " + str(b) + " m")
             return "Error in fuel volume"
 
     # For the fuel load only
 
-    # For the fuel load assuming the fuel tank starts at the root
+    # For the fuel load assuming the fuel tank starts at the root, 2 drops out because massfuel is divided by 2
     rootForceFuel = massFuel*g/xFuelTankEnd
     # slope
     slopeFuel = -rootForceFuel/halfwingspan
@@ -83,7 +83,6 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
             return 0
 
     outar = []
-
     for x in range(0, int(halfwingspan*10**decimalPlaces+dx*10**decimalPlaces), int(dx*10**decimalPlaces)):
         b = x / 10 ** int(decimalPlaces)
         totalForce = wingForce(b) + fuelForce(b)
@@ -95,5 +94,4 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
             totalForce += massEngine*g
 
         outar.append([b, totalForce])
-
     return outar
