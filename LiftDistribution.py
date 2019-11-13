@@ -62,7 +62,7 @@ def Liftvectors():
 
     for i in range(len(Lloc)):
 
-        lscaled = Lloc[i] * scalefac
+        lscaled = -(Lloc[i] * scalefac)
 
 
         Lscaled.append(lscaled)
