@@ -10,7 +10,7 @@ import WingLoadFunction
 # NOTE here the mass of the fuel is devided by 2 because else the fuel tank is bigger then the span of the wing
 # NOTE the positions of the engine i could not find hence they are random numbers for now
 # NOTE the wing loading takes into account the weight of the wing, the fuel, the engines and the wingtip
-wingLoadAr = WingLoadFunction.WingLoad(massFuel=104790/2, xEngine1=4, xEngine2=7, accuracy=1000)
+wingLoadAr = WingLoadFunction.WingLoad(massFuel=104790/2, xEngine1=7, xEngine2=15, accuracy=1000)
 print(wingLoadAr)
 
 totalLoad = []
@@ -29,6 +29,6 @@ for i in range(0, len(wingLoadAr)):
     zAr.append(F)
 
 # optionally print the result
-plt.scatter(xAr, zAr)
+plt.plot(xAr, zAr)
 plt.show()
 

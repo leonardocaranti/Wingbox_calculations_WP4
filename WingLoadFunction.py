@@ -5,8 +5,8 @@ Weight force diagram generator that includes the wing weight, wingtip weight, en
 import decimal
 import moment_of_inertia
 
-def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790, xEngine1 = 5,
-             xEngine2 = 10, densityKerosine = 810, pointLoadWingTip = 3000):
+def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790, xEngine1 = 7,
+             xEngine2 = 15, densityKerosine = 810, pointLoadWingTip = 3000):
 
     """
     Returns a 2D array giving the spanwise location alongside with the total force in the z direction (positive downward)
