@@ -1,73 +1,77 @@
-import csv
-import math
-import matplotlib.pyplot as plt
-import numpy as np
+def Liftvectors():
 
-with open('Lift.csv', 'r') as f:
-  reader = csv.reader(f)
-  Lpts = list(reader)
+    import csv
+    import math
+    import matplotlib.pyplot as plt
+    import numpy as np
 
-maxload = 3.5
-WTOW = 2820900
-sweep = 29
-sweeprad = math.radians(sweep)
+    with open('Lift.csv', 'r') as f:
+      reader = csv.reader(f)
+      Lpts = list(reader)
 
-Lscaled = []
-Ltot = []
-Lloc = []
-xscaled = []
-xsection = []
-L2dlist = []
+    maxload = 3.5
+    WTOW = 2820900
+    sweep = 29
+    sweeprad = math.radians(sweep)
 
-#print(Lpts)
+    Lscaled = []
+    Ltot = []
+    Lloc = []
+    xscaled = []
+    xsection = []
+    L2dlist = []
 
-i = 0
-m = 0
+    #print(Lpts)
 
-while i in range(len(Lpts)):
+    i = 0
+    m = 0
 
-    xspan = float(Lpts[i][0])
-    xcorr = xspan/math.cos(sweeprad)
-    xcenter = (xspan + float(Lpts[i-1][0]))/(2*math.cos(sweeprad))
-    L2d = float(Lpts[i][1])
-    L2dlist.append(L2d)
+    while i in range(len(Lpts)):
 
-    #print(xspan,xcorr,xcenter)
-    
-    if m < 1:
-        Lsec = L2d * (xcorr - 0)
+        xspan = float(Lpts[i][0])
+        xcorr = xspan/math.cos(sweeprad)
+        xcenter = (xspan + float(Lpts[i-1][0]))/(2*math.cos(sweeprad))
+        L2d = float(Lpts[i][1])
+        L2dlist.append(L2d)
 
-    else:
-        Lsec = L2d * (xcorr - float(Lpts[i-1][0])/math.cos(sweeprad))
+        #print(xspan,xcorr,xcenter)
+        
+        if m < 1:
+            Lsec = L2d * (xcorr - 0)
 
-    if xspan > 0 and xspan < 27.18:
+        else:
+            Lsec = L2d * (xcorr - float(Lpts[i-1][0])/math.cos(sweeprad))
 
-        xscaled.append(xcenter)
+        if xspan > 0 and xspan < 27.18:
 
-        Lloc.append(Lsec)
+            xscaled.append(xcenter)
 
-        #xsection.append(xcorr - float(Lpts[i-1][0])/math.cos(sweeprad))
+            Lloc.append(Lsec)
 
-        #print(xcorr,float(Lpts[i-1][0])/math.cos(sweeprad))
+            #xsection.append(xcorr - float(Lpts[i-1][0])/math.cos(sweeprad))
 
-        m = m + 1
+            #print(xcorr,float(Lpts[i-1][0])/math.cos(sweeprad))
 
-    i = i + 1
+            m = m + 1
 
-scalefac = (WTOW * maxload)/sum(Lloc)
+        i = i + 1
 
-Lscaled = []
+    scalefac = (WTOW * maxload)/sum(Lloc)
 
-for i in range(len(Lloc)):
+    Lscaled = []
 
-    lscaled = Lloc[i] * scalefac
+    for i in range(len(Lloc)):
+
+        lscaled = Lloc[i] * scalefac
 
 
-    Lscaled.append(lscaled)
+        Lscaled.append(lscaled)
 
-#print(sum(xsection))
-print(sum(Lscaled))
-plt.plot(xscaled,L2dlist)
-plt.xlabel('Span')
-plt.ylabel('Lift')
-plt.show()
+    #print(sum(xsection))
+    #print(sum(Lscaled))
+    #plt.plot(xscaled,L2dlist)
+    #plt.xlabel('Span')
+    #plt.ylabel('Lift')
+    #plt.show()
+
+    return (xscaled,Lscaled)
