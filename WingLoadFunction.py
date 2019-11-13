@@ -56,13 +56,13 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
         Area = moment_of_inertia.local_area(b)
         Volume += Area * dx
 
-        if Volume >= RequiredVolume:
-            xFuelTankEnd = b
-            print("Fuel tank ends at a spanwise location of " + str(b) + " m")
-            break
-        elif b >= halfwingspan:
-            print("Error integration for fuel volume failed, the lenght is bigger then the halfspan " + str(b) + " m")
-            return "Error in fuel volume"
+    #   if Volume >= RequiredVolume:
+    #       xFuelTankEnd = b
+    #       print("Fuel tank ends at a spanwise location of " + str(b) + " m")
+    #       break
+    #   elif b >= halfwingspan:
+    #       print("Error integration for fuel volume failed, the lenght is bigger then the halfspan " + str(b) + " m")
+    #       return "Error in fuel volume"
 
     print(RequiredVolume, Volume, moment_of_inertia.local_area(0), moment_of_inertia.local_area(halfwingspan))
 
