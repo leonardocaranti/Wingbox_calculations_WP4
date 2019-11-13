@@ -11,7 +11,6 @@ import WingLoadFunction
 # NOTE the positions of the engine i could not find hence they are random numbers for now
 # NOTE the wing loading takes into account the weight of the wing, the fuel, the engines and the wingtip
 wingLoadAr = WingLoadFunction.WingLoad(massFuel=104790/2, xEngine1=7, xEngine2=15, accuracy=1000)
-print(wingLoadAr)
 
 totalLoad = []
 xAr = []
