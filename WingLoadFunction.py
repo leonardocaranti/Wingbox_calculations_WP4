@@ -93,5 +93,5 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
         elif xEngine1-dx/2 <= b <= xEngine1+dx/2 or xEngine2-dx/2 <= b <= xEngine2+dx:
             totalForce += massEngine*g
 
-        outar.append([b, totalForce])
+        outar.append(b, totalForce)
     return outar
