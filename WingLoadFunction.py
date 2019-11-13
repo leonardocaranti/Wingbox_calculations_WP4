@@ -6,7 +6,7 @@ import decimal
 import moment_of_inertia
 
 def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790, xEngine1 = 0.3*57.443/2,
-             xEngine2 = 0.7*57.443/2, densityKerosine = 810, pointLoadWingTip = 3000):
+             xEngine2 = 0.7*57.443/2, densityKerosine = 810, pointLoadWingTip = 16000):
 
     """
     Returns a 2D array giving the spanwise location alongside with the total force in the z direction (positive downward)
@@ -33,9 +33,6 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
     rootForceWing = massWing*g/halfwingspan
     # slope = dz/dx note - sign because z axis is positive downwards
     slopeWing = -rootForceWing/halfwingspan
-    
-    xspan = []
-    wscaled = []
 
     def wingForce(b):
         """
@@ -57,7 +54,7 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
     for x in range(0, int(halfwingspan*10**decimalPlaces+dx*10**decimalPlaces), int(dx*10**decimalPlaces)):
         b = x / 10 ** int(decimalPlaces)
         Area = moment_of_inertia.local_area(b)
-        Volume += Area  * dx
+        Volume += Area * dx
 
         if Volume >= RequiredVolume:
             xFuelTankEnd = b
@@ -66,6 +63,8 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
         elif b >= halfwingspan:
             print("Error integration for fuel volume failed, the lenght is bigger then the halfspan " + str(b) + " m")
             return "Error in fuel volume"
+
+    print(RequiredVolume, Volume, moment_of_inertia.local_area(0), moment_of_inertia.local_area(halfwingspan))
 
     # For the fuel load only
 
@@ -85,7 +84,9 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
         else:
             return 0
 
-    outar = []
+    xspan = []
+    wscaled = []
+
     for x in range(0, int(halfwingspan*10**decimalPlaces+dx*10**decimalPlaces), int(dx*10**decimalPlaces)):
         b = x / 10 ** int(decimalPlaces)
         totalForce = wingForce(b) + fuelForce(b)
@@ -95,8 +96,8 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
             totalForce += pointLoadWingTip
         elif xEngine1-dx/2 <= b <= xEngine1+dx/2 or xEngine2-dx/2 <= b <= xEngine2+dx:
             totalForce += massEngine*g
-            
+
         xspan.append(b)
         wscaled.append(totalForce)
-        
-    return (xspan,wscaled)
+
+    return (xspan, wscaled)
