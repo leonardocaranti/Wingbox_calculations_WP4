@@ -55,8 +55,9 @@ def local_area(span_position):
     return area
 
 
-
-print("Centroid location", centroid(27))
+"""
+print("Centroid location", centroid(0))
 print()
-print("Moments of inertia", MOI(27))
-print("Area", local_area(27))
+print("Moments of inertia", MOI(0))
+print("Area", local_area(0))
+"""
