@@ -21,6 +21,10 @@ def dimens(span_position):
 
     return [rear_spar_h, front_spar_h, dist]
 
+def chord(span_position):
+    chord0, chord1 = root_dist/0.4, tip_dist/0.4
+    chord = span_position*(chord1-chord0)/b_2 + chord0
+    return chord
 
 # Centroid
 def centroid(span_position):
