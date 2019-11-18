@@ -5,11 +5,9 @@ Weight force diagram generator that includes the wing weight, wingtip weight, en
 import decimal
 import moment_of_inertia
 
-def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 61610, xEngine1 = 0.3*57.443/2,
+def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790, xEngine1 = 0.3*57.443/2,
              xEngine2 = 0.7*57.443/2, densityKerosine = 810, pointLoadWingTip = 16000):
 
- #Actual total fuel is  104790. Max fuel storable in the wings is 61610
-  
     """
     Returns a 2D array giving the spanwise location alongside with the total force in the z direction (positive downward)
     :param accuracy: Defines for how many points the force is calculated
@@ -61,10 +59,11 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
         if Volume >= RequiredVolume:
             xFuelTankEnd = b
             print("Fuel tank ends at a spanwise location of " + str(b) + " m")
-            break
+            #break
         elif b >= halfwingspan:
-            print("Error integration for fuel volume failed, the lenght is bigger then the halfspan " + str(b) + " m")
-            return "Error in fuel volume"
+            xFuelTankEnd = halfwingspan
+            print("Error: integration for fuel volume failed, the length required is larger than the halfspan " + str(b) + " m")
+            #return "Error in fuel volume"
 
     # For the fuel load only
 
