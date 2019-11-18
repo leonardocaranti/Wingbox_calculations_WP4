@@ -2,6 +2,14 @@ import moment_of_inertia
 import numpy as np
 
 def Deflection(spanAr, forceAr, halfspan = 57.443/2, E = 71*10**9):
+    '''
+    Outputs an array of deflection values and slopes dependant on the span array and force array
+    :param spanAr:
+    :param forceAr:
+    :param halfspan:
+    :param E:
+    :return:
+    '''
 
     # Deflection caused by point loads
     def pointLoadDeflection(F, distForce, x, halfspan, E):
