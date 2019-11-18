@@ -38,8 +38,9 @@ def int_load(force_list, pos_list):
 
     sh_load, bend_mom, y_positions = [],[], []
     for i in range(num_points+1):
-        sh_load.append(shear_load(i/num_points*half_span))
-        bend_mom.append(bending_moment(i/num_points*half_span))
-        y_positions.append(i/num_points*half_span)
+        if type(shear_load(i/num_points*half_span))==float and type(bending_moment(i/num_points*half_span))==float:
+            sh_load.append(shear_load(i/num_points*half_span))
+            bend_mom.append(bending_moment(i/num_points*half_span))
+            y_positions.append(i/num_points*half_span)
 
     return y_positions, [sh_load], [bend_mom]
