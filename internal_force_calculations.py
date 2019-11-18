@@ -43,4 +43,4 @@ def int_load(force_list, pos_list):
             bend_mom.append(bending_moment(i/num_points*half_span))
             y_positions.append(i/num_points*half_span)
 
-    return y_positions, [sh_load], [bend_mom]
+    return y_positions, sh_load, bend_mom
