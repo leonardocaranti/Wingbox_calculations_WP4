@@ -5,7 +5,7 @@ Weight force diagram generator that includes the wing weight, wingtip weight, en
 import decimal
 import moment_of_inertia
 
-def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790, xEngine1 = 0.3*57.443/2,
+def WingLoad(accuracy = 1000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790*0.59, xEngine1 = 0.3*57.443/2,
              xEngine2 = 0.7*57.443/2, densityKerosine = 810, pointLoadWingTip = 16000):
 
     """
@@ -59,10 +59,10 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
         if Volume >= RequiredVolume:
             xFuelTankEnd = b
             print("Fuel tank ends at a spanwise location of " + str(b) + " m")
-            #break
+            break
         elif b >= halfwingspan:
             xFuelTankEnd = halfwingspan
-            print("Error: integration for fuel volume failed, the length required is larger than the halfspan " + str(b) + " m")
+            print("Error: integration for fuel volume failed, the length required is larger than the halxspan " + str(b) + " m")
             #return "Error in fuel volume"
 
     # For the fuel load only
@@ -83,8 +83,8 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
         else:
             return 0
 
-    xspan = []
-    wscaled = []
+    xspan = [xEngine1, xEngine2]
+    wscaled = [massEngine*g, massEngine*g]
     M_y = []
 
     for x in range(0, int(halfwingspan*10**decimalPlaces+dx*10**decimalPlaces), int(dx*10**decimalPlaces)):
@@ -94,11 +94,31 @@ def WingLoad(accuracy = 10000, wingspan = 57.443, massEngine = 24984, massWing =
         # Account for the wingtip and engine
         if b == halfwingspan:
             totalForce += pointLoadWingTip
-        elif xEngine1-dx/2 <= b <= xEngine1+dx/2 or xEngine2-dx/2 <= b <= xEngine2+dx:
-            totalForce += massEngine*g
+        #elif xEngine1-dx/2 <= b <= xEngine1+dx/2 or xEngine2-dx/2 <= b <= xEngine2+dx:
+            #totalForce += massEngine*g
 
         xspan.append(b)
-        wscaled.append(totalForce)
+        wscaled.append(totalForce*dx)
         M_y.append(totalForce*b)
 
-    return (xspan, wscaled, M_y)
+    def sorted(xspan):
+        sort = True
+        for i in range(len(xspan) - 1):
+            if xspan[i + 1] < xspan[i]:
+                sort = False
+        return sort
+
+    while not sorted(xspan):
+        for i in range(len(xspan) - 1):
+            if xspan[i + 1] < xspan[i]:
+                # Invert values of xspan
+                oldv = xspan[i + 1]
+                xspan[i + 1] = xspan[i]
+                xspan[i] = oldv
+
+                # Invert values of wscaled
+                oldvl = wscaled[i + 1]
+                wscaled[i + 1] = wscaled[i]
+                wscaled[i] = oldvl
+        
+    return (xspan, wscaled)
