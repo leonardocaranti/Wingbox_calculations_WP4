@@ -1,7 +1,9 @@
 import moment_of_inertia
 import numpy as np
+import matplotlib.pyplot as plt
+import VectorlistLiftplane
 
-def Deflection(spanAr, forceAr, halfspan = 57.443/2, E = 71*10**9, xEngine1 = 0.3*57.443/2, xEngine2 = 0.7*57.443/2):
+def Deflection(halfspan = 57.443/2, E = 71*10**9, xEngine1 = 0.3*57.443/2, xEngine2 = 0.7*57.443/2):
     '''
     Outputs an array of deflection values and slopes dependant on the span array and force array
     :param spanAr:
@@ -10,6 +12,10 @@ def Deflection(spanAr, forceAr, halfspan = 57.443/2, E = 71*10**9, xEngine1 = 0.
     :param E:
     :return:
     '''
+
+    wingload = VectorlistLiftplane.Liftplaneforce()
+    forceAr = wingload[1]
+    spanAr = wingload[0]
 
     dx = spanAr[1]-spanAr[0]
 
@@ -54,4 +60,15 @@ def Deflection(spanAr, forceAr, halfspan = 57.443/2, E = 71*10**9, xEngine1 = 0.
     deflectionAr = np.sum(deflectionAr, axis=0)
     slopeAr = np.sum(slopeAr, axis=0)
 
+    plt.grid()
+    plt.xlabel("Span [m]")
+    plt.ylabel("Force [N]")
+    plt.subplot(121)
+    plt.plot(wingload[0], wingload[1])
+    plt.subplot(122)
+    plt.plot(wingload[0], deflectionAr, color='r')
+    plt.show()
+
     return deflectionAr, slopeAr
+
+Deflection()
