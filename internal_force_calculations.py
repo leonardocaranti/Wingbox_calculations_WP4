@@ -2,7 +2,7 @@
 # Given output: a list with four lists inside, the respective x-positions of the evaluated forces, shear forces,
 # axial loads and the internal moments at the given x positions.
 
-half_span, num_points = 28.74, 1000
+half_span, num_points = 28.7215, 1000
 
 def int_load(force_list, pos_list):
 
@@ -34,7 +34,7 @@ def int_load(force_list, pos_list):
             force_list.pop(i)
 
     tot_load = sum(force_list)
-    force_list[0] = -tot_load
+    force_list[0] = - tot_load
 
     sh_load, bend_mom, y_positions = [],[], []
     for i in range(num_points+1):
