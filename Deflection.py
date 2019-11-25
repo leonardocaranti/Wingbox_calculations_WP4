@@ -2,6 +2,7 @@ import moment_of_inertia
 import numpy as np
 import matplotlib.pyplot as plt
 import VectorlistLiftplane
+import multiprocessing
 
 def Deflection(halfspan = 57.443/2, E = 71*10**9, xEngine1 = 0.3*57.443/2, xEngine2 = 0.7*57.443/2):
     '''
@@ -20,8 +21,7 @@ def Deflection(halfspan = 57.443/2, E = 71*10**9, xEngine1 = 0.3*57.443/2, xEngi
     dx = spanAr[1]-spanAr[0]
 
     # Deflection caused by point loads
-    def pointLoadDeflection(F, distForce, x, halfspan, E):
-        I = moment_of_inertia.MOI(distForce)[0]
+    def pointLoadDeflection(F, distForce, x, halfspan, E, I):
 
         if 0 <= x <= distForce:
             return (F*x**2*(3*distForce-x))/(6*E*I)
@@ -41,20 +41,26 @@ def Deflection(halfspan = 57.443/2, E = 71*10**9, xEngine1 = 0.3*57.443/2, xEngi
     slopeAr = []
     np.array(deflectionAr)
     np.array(slopeAr)
+
     # Run through each point load
+    print("Starting deflection calculation")
     for i in range(0, len(spanAr)):
         # Run through each spanwise location of the point load
         distribution = []
         slope = []
+
+        I = moment_of_inertia.MOI(spanAr[i])[0]
+
         for x in range(0, len(spanAr)):
             if spanAr[i]-dx/2 <= xEngine1 <= spanAr[i]+dx/2 or  spanAr[i]-dx/2 <= xEngine2 <= spanAr[i]+dx/2:
-                distribution.append(pointLoadDeflection(forceAr[i], spanAr[i], spanAr[x], halfspan, E))
-                slope.append(pointLoadSlop(forceAr[i], spanAr[i], spanAr[x], halfspan, E))
+                distribution.append(pointLoadDeflection(forceAr[i], spanAr[i], spanAr[x], halfspan, E, I))
+                #slope.append(pointLoadSlop(forceAr[i], spanAr[i], spanAr[x], halfspan, E))
             else:
-                distribution.append(pointLoadDeflection(forceAr[i], spanAr[i], spanAr[x], halfspan, E))
-                slope.append(pointLoadSlop(forceAr[i], spanAr[i], spanAr[x], halfspan, E))
+                distribution.append(pointLoadDeflection(forceAr[i], spanAr[i], spanAr[x], halfspan, E, I))
+                #slope.append(pointLoadSlop(forceAr[i], spanAr[i], spanAr[x], halfspan, E))
         deflectionAr.append(distribution)
-        slopeAr.append(slope)
+        #slopeAr.append(slope)
+        print("Deflection progress: " + str(i+1) +"/" + str(len(spanAr)) + " | " + str(round((i+1)*100/(len(spanAr)),2)) + "%")
 
     # Add up all deflections of all point loads
     deflectionAr = np.sum(deflectionAr, axis=0)
