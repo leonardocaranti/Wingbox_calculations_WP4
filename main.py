@@ -1,7 +1,7 @@
 from VectorlistLiftplane import *
+from VectorlistDragplane import *
 from internal_force_calculations import *
 from graph import *
-import time
 
 """
 # Include all functions
@@ -14,17 +14,14 @@ plt.plot(xAr, zAr, xAr, M_Y)
 plt.show()
 """
 
-t0 = time.time()
 # Analysing the wingbox on the x-z plane
-positions, forces = Liftplaneforce()
-#force_diagrams(forces, positions)
+positions_xz, forces_xz = Liftplaneforce()
+pos_list_xz, sh_load_xz, bend_mom_xz = int_load(forces_xz, positions_xz)
+force_diagrams("Internal force diagrams in the lift-plane", sh_load_xz, pos_list_xz, bend_mom_xz)
 
-pos_list, sh_load, bend_mom = int_load(forces, positions)
-
-t1 = time.time()
-print("Took", round(t1-t0,1), "seconds")
-
-force_diagrams("Internal force diagrams in the lift-plane", sh_load, pos_list, bend_mom)
 
 # Analysing the wingbox on the y-z plane
+positions_yz, forces_yz = Dragplaneforce()
+pos_list_yz, sh_load_yz, bend_mom_yz = int_load(forces_yz, positions_yz)
+force_diagrams("Internal force diagrams in the drag-plane", sh_load_yz, pos_list_yz, bend_mom_yz)
 
