@@ -8,7 +8,7 @@ def Liftplaneforce():
 
     (lspan, lvec) = Liftvectors()
 
-    (wspan, wvec) = WingLoad()
+    (wspan, wvec) = WingLoad()[0:2]
 
     fspan = lspan + wspan
 
