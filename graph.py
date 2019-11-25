@@ -12,7 +12,11 @@ def force_diagrams(graph_name, force, xspan, moment=0):
     plt.xlabel("x-coordinate span (m)")
     plt.ylabel("Shear force (N)")
     plt.grid()
-    plt.axhline(y=min(force), lw=1 ,ls='dashed' ,color='#d62728')
+    if abs(max(force))>abs(min(force)):
+        crit_val = max(force)
+    else:
+        crit_val = min(force)
+    plt.axhline(y=crit_val, lw=1 ,ls='dashed' ,color='#d62728')
 
     if not moment ==0:
         plt.subplot(122)
@@ -21,6 +25,10 @@ def force_diagrams(graph_name, force, xspan, moment=0):
         plt.xlabel("x-coordinate span (m)")
         plt.ylabel("Bending moment (Nm)")
         plt.grid()
-        plt.axhline(y=max(moment), lw=1 ,ls='dashed' ,color='#d62728')
+        if abs(max(moment)) > abs(min(moment)):
+            crit_val = max(moment)
+        else:
+            crit_val = min(moment)
+        plt.axhline(y=crit_val, lw=1 ,ls='dashed' ,color='#d62728')
 
     plt.show()
