@@ -9,7 +9,7 @@ def Liftvectors():
       reader = csv.reader(f)
       Lpts = list(reader)
 
-    maxload = 3.5
+    maxload = 3.75
     WTOW = 2820900
     sweep = 29
     sweeprad = math.radians(sweep)
