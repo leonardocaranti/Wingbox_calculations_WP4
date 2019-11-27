@@ -4,15 +4,17 @@ from matplotlib import pyplot as plt
 b_2 = 28.74
 
 # Tip
-rear_spar_h_tip = 0.2324
-front_spar_h_tip = 0.2534
-tip_dist = 0.891
+tip_chord = 2.75
+rear_spar_h_tip = 0.2324                    # At 65% of chord
+front_spar_h_tip = 10.29/100*tip_chord      # At 20% of chord
+tip_dist = 0.45*tip_chord
 theta_tip = atan((front_spar_h_tip-rear_spar_h_tip)*0.5/tip_dist)
 
 # Root
+root_chord = 12.5
 rear_spar_h_root = 0.8606
-front_spar_h_root = 0.9386
-root_dist = 3.3
+front_spar_h_root = 10.29/100*root_chord
+root_dist = 0.45*root_chord
 theta_root = atan((front_spar_h_root-rear_spar_h_root)*0.5/root_dist)
 
 t0, t1 = 0.03, 0.01
@@ -78,8 +80,8 @@ def cross_section(value, span_position):
 
     up_sheet = beam(t, (dist - 2 * t) / cos(theta), 0, front_spar_h / 2 - (front_spar_h - rear_spar_h) / 4, -theta)
     down_sheet = beam(t, (dist - 2 * t) / cos(theta), 0, -(front_spar_h / 2 - (front_spar_h - rear_spar_h) / 4), theta)
-    front_spar = beam(rear_spar_h + t, t, -dist / 2 + t / 2, 0, 0)
-    rear_spar = beam(rear_spar_h - t, t, dist / 2 - t / 2, 0, 0)
+    front_spar = beam(front_spar_h + t, t, -dist / 2 + t / 2, 0, 0)
+    rear_spar = beam(rear_spar_h + t, t, dist / 2 - t / 2, 0, 0)
     elements = [up_sheet, down_sheet, front_spar, rear_spar]
 
     if value == 1:
@@ -164,7 +166,6 @@ def plot_cross_section(span_position):
 
     plt.show()
 
-plot_cross_section(0)
 
 def chord(span_position):
     chord0, chord1 = root_dist/0.4, tip_dist/0.4
@@ -186,6 +187,8 @@ def max_distances(span_position):
     y_max = (dist/2 + abs(centr[1]))*centr[1]/abs(centr[1])
 
     return x_max, y_max
+
+plot_cross_section(0)
 
 """
 # General values
