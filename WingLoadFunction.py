@@ -5,8 +5,8 @@ Weight force diagram generator that includes the wing weight, wingtip weight, en
 import decimal
 import moment_of_inertia
 
-def WingLoad(accuracy = 1000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790*0.59, xEngine1 = 0.3*57.443/2,
-             xEngine2 = 0.7*57.443/2, densityKerosine = 810, pointLoadWingTip = 16000):
+def WingLoad(accuracy = 1000, wingspan = 57.443, massEngine = 24984, massWing = 24014, massFuel = 104790, xEngine1 = 0.3*57.443/2,
+             xEngine2 = 0.7*57.443/2, densityKerosine = 810, pointLoadWingTip = 16000*0.1):
 
     """
     Returns a 2D array giving the spanwise location alongside with the total force in the z direction (positive downward)
@@ -46,11 +46,11 @@ def WingLoad(accuracy = 1000, wingspan = 57.443, massEngine = 24984, massWing = 
     decimalPlaces = \
         abs(min(decimal.Decimal(str(halfwingspan)).as_tuple().exponent, decimal.Decimal(str(dx)).as_tuple().exponent))
 
+    # Integrate untill the required fuel volume is reached
     # Calculate the fuel tank end location assuming it starts at the root
     Volume = 0
-    RequiredVolume = (massFuel/2)/(densityKerosine)
+    RequiredVolume = (massFuel / 2) / (densityKerosine)
 
-    # Integrate untill the required fuel volume is reached
     for x in range(0, int(halfwingspan*10**decimalPlaces+dx*10**decimalPlaces), int(dx*10**decimalPlaces)):
         b = x / 10 ** int(decimalPlaces)
         Area = moment_of_inertia.local_area(b)
@@ -63,14 +63,15 @@ def WingLoad(accuracy = 1000, wingspan = 57.443, massEngine = 24984, massWing = 
         elif b >= halfwingspan:
             xFuelTankEnd = halfwingspan
             print("Error: integration for fuel volume failed, the length required is larger than the halxspan " + str(b) + " m")
-            #return "Error in fuel volume"
-
-    # For the fuel load only
+            quit()
 
     # For the fuel load assuming the fuel tank starts at the root, 2 drops out because massfuel is divided by 2
-    rootForceFuel = massFuel*g/xFuelTankEnd
+    #rootForceFuel = 0
+    rootForceFuel = massFuel * g / xFuelTankEnd
     # slope
-    slopeFuel = -rootForceFuel/halfwingspan
+    slopeFuel = -rootForceFuel / halfwingspan
+
+    # For the fuel load only
 
     def fuelForce(b):
         """
