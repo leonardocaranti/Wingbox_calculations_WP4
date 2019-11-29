@@ -2,6 +2,7 @@ import moment_of_inertia
 import numpy as np
 import matplotlib.pyplot as plt
 import VectorlistLiftplane
+import VectorlistDragplane
 import time
 
 def Deflection(halfspan = 57.443/2, E = 71.7*10**9, xEngine1 = 0.3*57.443/2, xEngine2 = 0.7*57.443/2):
@@ -15,6 +16,7 @@ def Deflection(halfspan = 57.443/2, E = 71.7*10**9, xEngine1 = 0.3*57.443/2, xEn
     '''
 
     wingload = VectorlistLiftplane.Liftplaneforce()
+    #wingload = VectorlistDragplane.Dragplaneforce()
     forceAr = wingload[1]
     spanAr = wingload[0]
 
@@ -24,9 +26,9 @@ def Deflection(halfspan = 57.443/2, E = 71.7*10**9, xEngine1 = 0.3*57.443/2, xEn
     def pointLoadDeflection(F, distForce, x, halfspan, E, I):
 
         if 0 <= x <= distForce:
-            return (F*x**2*(3*distForce-x))/(6*E*I)
+            return -(F*x**2*(3*distForce-x))/(6*E*I)
         elif distForce <= x <= halfspan:
-            return (F*distForce**2*(3*x-distForce))/(6*E*I)
+            return -(F*distForce**2*(3*x-distForce))/(6*E*I)
 
     def pointLoadSlop(F, distForce, x, halfspan, E, I):
 
