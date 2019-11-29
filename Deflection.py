@@ -33,9 +33,9 @@ def Deflection(halfspan = 57.443/2, E = 71.7*10**9, xEngine1 = 0.3*57.443/2, xEn
     def pointLoadSlop(F, distForce, x, halfspan, E, I):
 
         if 0 <= x <= distForce:
-            return (F*x*(2*distForce-x))/(2*E*I)
+            return -(F*x*(2*distForce-x))/(2*E*I)
         elif distForce <= x <= halfspan:
-            return (F*distForce**2)/(2*E*I)
+            return -(F*distForce**2)/(2*E*I)
 
 
     deflectionAr = []
@@ -80,10 +80,10 @@ def Deflection(halfspan = 57.443/2, E = 71.7*10**9, xEngine1 = 0.3*57.443/2, xEn
     plt.xlabel("Span [m]")
     plt.ylabel("Deflection [m]")
     plt.plot(wingload[0], deflectionAr, color='red')
-    #plt.subplot(313)
-    #plt.xlabel("Span [m]")
-    #plt.ylabel("Slope")
-    #plt.plot(wingload[0], slopeAr, color='green')
+    plt.subplot(313)
+    plt.xlabel("Span [m]")
+    plt.ylabel("Slope")
+    plt.plot(wingload[0], slopeAr, color='green')
     plt.show()
 
     return deflectionAr, slopeAr
