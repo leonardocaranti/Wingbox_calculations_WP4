@@ -2,6 +2,7 @@ from math import *
 from matplotlib import pyplot as plt
 
 b_2 = 28.74
+density = 2.83*1000
 
 # Tip
 tip_chord = 2.75
@@ -17,12 +18,31 @@ front_spar_h_root = 10.29/100*root_chord
 root_dist = 0.45*root_chord
 theta_root = atan((front_spar_h_root-rear_spar_h_root)*0.5/root_dist)
 
-t0, t1 = 0.03, 0.01
-stringer_height_0, stringer_height_1 = 0.16, 0.12
-stringer_thickness_0, stringer_thickness_1 = 0.015, 0.01
-cross_section_value = 3                                     # 1 corresponds to a cross section of skins only, 2 is skins + stringers on the top, 3 is stringers on top and bottom
+"""Case 1
+t0, t1 = 0.07, 0.03
+stringer_height_0, stringer_height_1 = 0.12, 0.12
+stringer_thickness_0, stringer_thickness_1 = 0.03, 0.03
+cross_section_value = 1                                     # 1 corresponds to a cross section of skins only, 2 is skins + stringers on the top, 3 is stringers on top and bottom
 no_stringers_top = 5                                        # Must be greater than 1 for code to work!
 no_stringers_bott = 3                                       # Must be greater than 1 for code to work!
+"""
+
+"""Case 2
+t0, t1 = 0.03, 0.03
+stringer_height_0, stringer_height_1 = 0.05, 0.05
+stringer_thickness_0, stringer_thickness_1 = 0.01, 0.01
+cross_section_value = 2                                     # 1 corresponds to a cross section of skins only, 2 is skins + stringers on the top, 3 is stringers on top and bottom
+no_stringers_top = 14                                        # Must be greater than 1 for code to work!
+no_stringers_bott = 5                                       # Must be greater than 1 for code to work!
+"""
+
+
+t0, t1 = 0.03, 0.03
+stringer_height_0, stringer_height_1 = 0.05, 0.05
+stringer_thickness_0, stringer_thickness_1 = 0.01, 0.01
+cross_section_value = 3                                     # 1 corresponds to a cross section of skins only, 2 is skins + stringers on the top, 3 is stringers on top and bottom
+no_stringers_top = 10                                        # Must be greater than 1 for code to work!
+no_stringers_bott = 5                                       # Must be greater than 1 for code to work!
 
 
 class beam:
@@ -85,7 +105,9 @@ def cross_section(value, span_position):
     elements = [up_sheet, down_sheet, front_spar, rear_spar]
 
     if value == 1:
-        elements = elements
+
+        central_spar = beam((front_spar_h + rear_spar_h)/2 -t , t, 0, 0, 0)
+        elements.append(central_spar)
 
     if value == 2:
 
@@ -154,15 +176,16 @@ def plot_cross_section(span_position):
     elements = cross_section(cross_section_value, span_position)
     for element in elements:
         if type(element) == stringer:
-            colour = "blue"
+            colour = "black"
         if type(element) == beam:
-            colour = "blue"
+            colour = "black"
         plt.plot(element.x_coords, element.y_coords, color = colour)
 
     centr = centroid(span_position)
     plt.axvline(x=centr[0], lw=1, ls='dashed', color = "black")
     plt.axhline(y=centr[1], lw=1, ls='dashed', color = "black")
-    plt.title(label = "Cross-section at an x-coordinate of " + str(span_position) + "[m]")
+    plt.title(label = "Cross-section at a span position of " + str(span_position) + "[m]")
+    plt.text(centr[0]*10, centr[1]*10, "Centroid: (" + str(round(centr[0],2)) + "," + str(round(centr[1],2)) + ")", color = "green")
 
     plt.show()
 
@@ -188,7 +211,19 @@ def max_distances(span_position):
 
     return x_max, y_max
 
-plot_cross_section(0)
+def mass():
+    elements_root = cross_section(cross_section_value, 0)
+    area_root = 0
+    for element_root in elements_root:
+        area_root += element_root.area
+
+    elements_tip = cross_section(cross_section_value, b_2)
+    area_tip = 0
+    for element_tip in elements_tip:
+        area_tip += element_tip.area
+
+    avg_area = (area_root + area_tip)/2
+    return density*avg_area
 
 """
 # General values
