@@ -85,7 +85,7 @@ def WingLoad(accuracy = 1000, wingspan = 57.443, massEngine = 24984, massWing = 
             return 0
 
     xspan = [xEngine1, xEngine2]
-    wscaled = [massEngine*g, massEngine*g]
+    wscaled = [-massEngine*g, -massEngine*g]
     M_y = []
 
     for x in range(0, int(halfwingspan*10**decimalPlaces+dx*10**decimalPlaces), int(dx*10**decimalPlaces)):
@@ -99,8 +99,8 @@ def WingLoad(accuracy = 1000, wingspan = 57.443, massEngine = 24984, massWing = 
             #totalForce += massEngine*g
 
         xspan.append(b)
-        wscaled.append(totalForce*dx)
-        M_y.append(totalForce*b)
+        wscaled.append(-totalForce*dx)
+        M_y.append(-totalForce*b)
 
     def sorted(xspan):
         sort = True
