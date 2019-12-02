@@ -18,6 +18,7 @@ front_spar_h_root = 10.29/100*root_chord
 root_dist = 0.45*root_chord
 theta_root = atan((front_spar_h_root-rear_spar_h_root)*0.5/root_dist)
 
+"""
 #Case 1
 t0, t1 = 0.07, 0.03 
 stringer_height_0, stringer_height_1 = 0.12, 0.12
@@ -25,7 +26,7 @@ stringer_thickness_0, stringer_thickness_1 = 0.03, 0.03
 cross_section_value = 1                                     # 1 corresponds to a cross section of skins only + one central spar, 2 is skins + stringers on the top, 3 is stringers on top and bottom
 no_stringers_top = 35                                        # Must be greater than 1 for code to work!
 no_stringers_bott = 25                                       # Must be greater than 1 for code to work!
-
+"""
 
 """
 #Case 2
@@ -37,7 +38,7 @@ no_stringers_top = 14                                        # Must be greater t
 no_stringers_bott = 5                                       # Must be greater than 1 for code to work!
 """
 
-"""
+
 #Case 3
 t0, t1 = 0.03, 0.03
 stringer_height_0, stringer_height_1 = 0.05, 0.05
@@ -45,7 +46,7 @@ stringer_thickness_0, stringer_thickness_1 = 0.01, 0.01
 cross_section_value = 3                                     # 1 corresponds to a cross section of skins only + one central spar, 2 is skins + stringers on the top, 3 is stringers on top and bottom
 no_stringers_top = 10                                        # Must be greater than 1 for code to work!
 no_stringers_bott = 5                                       # Must be greater than 1 for code to work!
-"""
+
 
 """Random
 t0, t1 = 0.02, 0.01
