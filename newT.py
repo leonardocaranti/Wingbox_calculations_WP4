@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 
 L = 28.74 	#[m]
 G = 28000000000
+fus_diam = 6.01 #[m]
 
 def newT():
 
@@ -16,9 +17,11 @@ def newT():
     summationtorques, theta_tab, theta = [], [], 0
     totaltorque = sum(y)
 
+    #Torque and twist angle
     for i in range(len(y)):
+
         T = totaltorque - y[i]
-        #summationtorques.append(T)
+        summationtorques.append(T)
         if i == 0:
             theta = 0
         else:
@@ -29,8 +32,15 @@ def newT():
 
         totaltorque = T
 
-    print(theta_tab)
-    print(x)
+    #T/theta
+    t_over_theta_tab, x_fus = [], []
+    for i in range(len(y)):
+        if x[i]>fus_diam/2:
+            x_fus.append(x[i])
+            t_over_theta_tab.append(summationtorques[i]/theta_tab[i])
+
+    print(t_over_theta_tab)
+    print(x_fus)
 
     plt.title("Twist angle distribution")
     plt.plot(x, theta_tab)
