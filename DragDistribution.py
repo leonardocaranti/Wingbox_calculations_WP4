@@ -11,6 +11,7 @@ def Dragvectors():
     dragwfactor = 0 #0.5
     WTOW = 2820900
     thrust = 1496360
+    thrust_sweep = 1496360*math.cos(36*math.pi/180)
 
     Dscaled = []
     Dtot = []
@@ -54,7 +55,7 @@ def Dragvectors():
 
     print("Drag sum:", sum(Dloc))
 
-    scalefac = ((WTOW * dragwfactor) + thrust*0.5) / sum(Dloc)
+    scalefac = ((WTOW * dragwfactor) + thrust_sweep*0.5) / sum(Dloc)
 
     Dscaled = []
 
